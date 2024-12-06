@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Board from './Board';
 import Status from './Status';
 import '../styles/custom.css';
 import '../styles/StartScreen.css';
 
-const TicTacToe = ({onExit}) => {
+const TicTacToeFriend = ({onExit}) => {
   const [board, setBoard] = useState(Array(9).fill(null));
   const [isXNext, setIsXNext] = useState(true);
   const [gameOver, setGameOver] = useState(false);
@@ -30,42 +30,6 @@ const TicTacToe = ({onExit}) => {
     localStorage.setItem('tic-tac-toe-isXNext', JSON.stringify(isXNext));
   }, [board, isXNext]);
 
-  // Minimax AI algorithm for unbeatable play
-  const minimax = (newBoard, isMaximizing) => {
-    const winner = calculateWinner(newBoard);
-    if (winner === aiPlayer) return { score: 1 };
-    if (winner === player) return { score: -1 };
-    if (!newBoard.includes(null)) return { score: 0 };
-
-    let bestScore = isMaximizing ? -Infinity : Infinity;
-    let bestMove;
-
-    for (let i = 0; i < 9; i++) {
-      if (newBoard[i] === null) {
-        newBoard[i] = isMaximizing ? aiPlayer : player;
-        const { score } = minimax(newBoard, !isMaximizing);
-        newBoard[i] = null;
-
-        if (isMaximizing) {
-          if (score > bestScore) {
-            bestScore = score;
-            bestMove = i;
-          }
-        } else {
-          if (score < bestScore) {
-            bestScore = score;
-            bestMove = i;
-          }
-        }
-      }
-    }
-    return { score: bestScore, index: bestMove };
-  };
-
-  const handleAIMove = useCallback(() => {
-    const { index } = minimax(board, true);
-    handleSquareClick(index);
-  }, [board]);
 
   const calculateWinner = (squares) => {
     const lines = [
@@ -103,23 +67,19 @@ const TicTacToe = ({onExit}) => {
     setWinner(null);
     localStorage.removeItem('tic-tac-toe-board');
     localStorage.removeItem('tic-tac-toe-isXNext');
-  };
-  
-  useEffect(() => {
-    if (!isXNext && !gameOver) {
-      const timer = setTimeout(handleAIMove, 500); 
-      return () => clearTimeout(timer);
-    }
-  }, [isXNext, gameOver, handleAIMove]);
+  };  
 
   return (
  <div>
         <>
+          {/* <p  style={{ color: '#fff', fontSize: '1.5rem', marginBottom: '20px' }}>
+           Play With Friend
+          </p> */}
           <Board board={board} onSquareClick={handleSquareClick} />
-          <Status gameOver={gameOver} winner={winner} isXNext={isXNext} onReset={resetGame} onExit={onExit} />
+          <Status gameOver={gameOver} winner={winner} isXNext={isXNext} onReset={resetGame} onExit={onExit}/>
         </>
     </div>
   );
 };
 
-export default TicTacToe;
+export default TicTacToeFriend;

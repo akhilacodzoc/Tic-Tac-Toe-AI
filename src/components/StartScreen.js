@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/StartScreen.css';
 
-const StartScreen = ({ onStart }) => {
+const StartScreen = ({ onStart,onStartF }) => {
   return (
     <div className="start-screen"
      style={{
@@ -25,8 +25,9 @@ const StartScreen = ({ onStart }) => {
             <li>The first player to get three in a row wins!</li>
             <li>If the board fills up without a winner, it's a draw.</li>
           </ul>
+        <button className="start-btn" onClick={onStart}>Play with AI</button>
         </div>
-        <button className="start-btn" onClick={onStart}>Start Game</button>
+        <button className="start-btn" onClick={onStartF}>Play With Friends</button>
       </div>
     </div>
   );
